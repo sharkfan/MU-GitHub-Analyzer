@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/ccl.jar"/>
+	<classpathentry kind="lib" path="lib/com.fasterxml.jackson.databind.jar"/>
+	<classpathentry kind="lib" path="lib/com.jcraft.jsch_0.1.31.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/github-api-1.84.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/javacc.jar"/>
+	<classpathentry kind="lib" path="lib/javancss-32.53.jar"/>
+	<classpathentry kind="lib" path="lib/jhbasic.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="lib/org-eclipse-jgit.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.egit.github.core-2.1.5.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
