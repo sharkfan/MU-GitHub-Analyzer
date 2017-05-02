@@ -4,29 +4,31 @@ MU GitHub Analyzer is a program that accesses GitHub projects to find data that 
 
 **A summary of MUGHA’s capabilities as of May 2017**
 
-*Takes lists of GitHub usernames and a user’s login information.
+* Takes lists of GitHub usernames and a user’s login information.
 
-*Retrieves all repositories from the users in the lists.
+* Retrieves all repositories from the users in the lists.
 
-*Retrieves attributes about those repositories.
+* Retrieves attributes about those repositories.
 
-*Imports those repositories to the user’s machine.
+* Imports those repositories to the user’s machine.
 
-*Can perform static analysis on those imported repositories if they’re in Java.
+* Can perform static analysis on those imported repositories if they’re in Java.
 
-*Stores that information in a MySQL database.
+* Stores that information in a MySQL database.
 
-*Shows the information from the database in the UI.
+* Shows the information from the database in the UI.
 
-*Can delete that information from the database via the UI.
+* Can delete that information from the database via the UI.
 
-*Please consult the requirements document if you have access to see what improvements are expected for it.
+* Please consult the requirements document if you have access to see what improvements are expected for it.
 
 
 
 ### Prerequisites
 
 Have a GitHub username and password.
+
+Make sure  you have Java installed on your system. You can follow the instructions to do so here: https://java.com/en/download/help/download_options.xml .
 
 Make sure you have MySQL installed on your system. You can follow the instructions to do so here: https://dev.mysql.com/doc/refman/5.7/en/installing.html .
 
@@ -40,21 +42,19 @@ MUGHA software expects the MySql instance service to be available in the localho
 
 Get the code from this repository https://github.com/sharkfan/MU-GitHub-Analyzer
 
-Make sure  you have Java installed on your system. You can follow the instructions to do so here: https://java.com/en/download/help/download_options.xml .
-
 Open the application  by running the code as a Java application in Eclipse or exporting it as a Jar file which you can also do in Eclipse by clicking File → Export and select Runnable Jar File and inputting settings like these (MU22 should instead be the name of the project you imported into Eclipse)
 
 
 
 ### Suggestions for future work to do
 
-Probably break up some of the code in MainController.java into smaller files.
-
 Figure out how to get data from a repository across its commit history instead of the current state MUGHA currently gets.
 
-Add more metrics to the search tab as the requirements state.
+Break up the code in MainController.java into smaller files.
 
-Add more features to the candidate pool tab as the requirements state.
+Add more options to the Search tab as the requirements state.
+
+Add more features to the Candidate Pool tab as the requirements state.
 
 Separate static analysis into its own method ran by its own button as requirements state.
 
