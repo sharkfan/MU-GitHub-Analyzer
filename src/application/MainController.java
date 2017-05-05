@@ -44,8 +44,6 @@ import javancss.Javancss;
 public class MainController implements Initializable {
 
 	@FXML
-	private TextArea myMessage;
-	@FXML
 	private TableView<UserDetails> tableUser;
 	@FXML
 	private TableColumn<UserDetails, String> columnProjectName;
@@ -74,6 +72,8 @@ public class MainController implements Initializable {
 	@FXML
 	private TextArea usernamefield;
 	@FXML
+	private TextArea feedback;
+	@FXML
 	private TextField loginusernamefield;
 	@FXML
 	private TextField loginpasswordfield;
@@ -83,17 +83,10 @@ public class MainController implements Initializable {
 	private ChoiceBox choiceBox;
     ObservableList<String> programmingLanguageList =
     		FXCollections.observableArrayList("Java");
-	// Initialize observable list to hold out database data
+	//Initialize observable list to hold database data
 	private ObservableList<UserDetails> data;
 
 	private Connection connection;
-	
-	@Override
-    public void initialize(URL url, ResourceBundle rb) {
-        loadDataFromDatabase();
-        choiceBox.setMaxWidth(Control.USE_COMPUTED_SIZE);
-		choiceBox.setItems(programmingLanguageList);
-    }
 
 	public class JacocoMetrics {
 		long numberOfClasses;
@@ -106,7 +99,37 @@ public class MainController implements Initializable {
 		createDatabase();
 		createTable();
 	}
+	
+	/**
+	 * Calling loadDataFromDatabase() here is necessary for the UI to show the
+	 * mySQL database.
+	 * 
+	 * @param url
+	 *            The location used to resolve relative paths for the root
+	 *            object, or null if the location is not known.
+	 * 
+	 * @param rb
+	 *            The resources used to localize the root object, or null if the
+	 *            root object was not localized.
+	 */
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		loadDataFromDatabase();
+		choiceBox.setMaxWidth(Control.USE_COMPUTED_SIZE);
+		choiceBox.setItems(programmingLanguageList);
+	}
 
+	/**
+	 * Allows access to the GitHub API.
+	 * 
+	 * @param login
+	 *            GitHub user name or e-mail address.
+	 * 
+	 * @param password
+	 *            The password for that GitHub user name or e-mail address.
+	 * 
+	 * @return Connection to GitHub.
+	 */
 	public GitHub initializeGitHubApi(String login, String password) {
 		try {
 			return GitHub.connectUsingPassword(login, password);
@@ -117,6 +140,13 @@ public class MainController implements Initializable {
 		return null;
 	}
 
+	/**
+	 * Not used. Deletes folders during the static analysis part of
+	 * generateProjectMetrics().
+	 * 
+	 * @param folder
+	 *            The directory to be deleted.
+	 */
 	public static void deleteFolder(File folder) {
 		File[] files = folder.listFiles();
 		if (files != null) { // some JVMs return null for empty dirs
@@ -131,13 +161,23 @@ public class MainController implements Initializable {
 		folder.delete();
 	}
 
+	/**
+	 * Imports all of GitHub user's (Java) repositories to the user's machine,
+	 * uses Javancss to find the number of Classes, Methods, and LOC.
+	 * 
+	 * @param user
+	 *            The GitHub User.
+	 * 
+	 * @param generatedMetrics
+	 *            A HashMap that holds the number of Classes, Methods, and LOC.
+	 */
 	public void generateProjectMetrics(String user, HashMap<String, JacocoMetrics> generatedMetrics) {
 		int count = 1;
 		OAuthService oauthService = new OAuthService();
 
-		// connect to github using koshuke api
+		// Connect to github
 		if (loginusernamefield.getText().isEmpty() || loginpasswordfield.getText().isEmpty()) {
-			// to do: add alert dialog or attention-grabbing effect for the text fields here
+			// TODO add alert dialog or attention-grabbing effect for the text fields here
 			return;
 		}
 		String login = loginusernamefield.getText();
@@ -182,7 +222,7 @@ public class MainController implements Initializable {
 
 						System.out.println("\nfetch completed\n");
 
-						// metricsGenerator.
+						// metricsGenerator
 						String repoName = repo.getCloneUrl();
 						repoName = repoName.replace("https://github.com/", "");
 						repoName = repoName.replace(".git", "");
@@ -229,7 +269,7 @@ public class MainController implements Initializable {
 			return contributors.asList().size();
 		} catch (IOException e) {
 			// e.printStackTrace();
-			System.out.println("Execption in GH api ");
+			System.out.println("Exception in GH api ");
 		}
 		return 0;
 	}
@@ -242,7 +282,7 @@ public class MainController implements Initializable {
 			return repository.getIssues(GHIssueState.OPEN).size() + repository.getIssues(GHIssueState.CLOSED).size();
 		} catch (IOException e) {
 			// e.printStackTrace();
-			System.out.println("Execption in GH api ");
+			System.out.println("Exception in GH api ");
 		}
 		return 0;
 	}
@@ -256,7 +296,7 @@ public class MainController implements Initializable {
 					+ repository.getPullRequests(GHIssueState.OPEN).size());
 		} catch (IOException e) {
 			// e.printStackTrace();
-			System.out.println("Execption in GH api ");
+			System.out.println("Exception in GH api ");
 		}
 		return 0;
 	}
@@ -271,7 +311,7 @@ public class MainController implements Initializable {
 
 		} catch (IOException e) {
 			// e.printStackTrace();
-			System.out.println("Execption in GH api ");
+			System.out.println("Exception in GH api ");
 		}
 		return 0;
 	}
@@ -285,7 +325,7 @@ public class MainController implements Initializable {
 			return commits.asList().size();
 		} catch (IOException e) {
 			// e.printStackTrace();
-			System.out.println("Execption in GH api ");
+			System.out.println("Exception in GH api ");
 		}
 		return 0;
 	}
@@ -300,25 +340,30 @@ public class MainController implements Initializable {
 			return commits.asList().get(0).getCommitDate();
 		} catch (IOException e) {
 			// e.printStackTrace();
-			System.out.println("Execption in GH api ");
+			System.out.println("Exception in GH api ");
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Finds data about every repository of every user provided via UI
+	 * and enters it in the database.
+	 * 
+	 * @param event
+	 *            Clicking the button that says "Search".
+	 */
 	public void getMetrics(ActionEvent event) throws IOException, SQLException {
 
 		// connect to github using koshuke api
 		if (loginusernamefield.getText().isEmpty() || loginpasswordfield.getText().isEmpty()) {
-			// to do: add alert dialog or attention-grabbing effect for the text fields here
+			// to do: add alert dialog or attention-grabbing effect for the text
+			// fields here
 			return;
 		}
 		String login = loginusernamefield.getText();
 		String password = loginpasswordfield.getText();
 
-		/*
-		 * get Git user list from the UI parse it and add it to an array of
-		 * string
-		 */
+		//get user name list from the UI, parse it, and add it to a string array
 		String usernames = usernamefield.getText();
 		String[] arr = usernames.split("[^a-zA-Z0-9_-]+");
 
@@ -355,7 +400,7 @@ public class MainController implements Initializable {
 
 					String newRepoName = repoName;
 					System.out.println("new repo name " + newRepoName);
-					myMessage.appendText(user + "'s project: " + newRepoName + " added to candidate pool\n");
+					feedback.appendText(user + "'s project: " + newRepoName + " added to candidate pool\n");
 
 					try {
 						int numberOfContributors = getNumberOfContributors(github, newRepoName);
@@ -392,17 +437,26 @@ public class MainController implements Initializable {
 					}
 				}
 			}
+			//refresh the UI table
 			loadDataFromDatabase();
 		}
-
 	}
 
+	/**
+	 * Allows access to the mySQL database.
+	 * 
+	 * @param dbname
+	 *            The name of the database (mugha).
+	 * 
+	 * @return Connection to the database.
+	 */
 	public Connection connectToDB(String dbname) {
 		// JDBC driver name and database URL
 		final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 		final String DB_URL = "jdbc:mysql://localhost/";
 
 		// Database credentials
+		// TODO resolve potential for these credentials to not match up with other users.
 		final String USER = "root";
 		final String PASS = "";
 		try {
@@ -423,14 +477,14 @@ public class MainController implements Initializable {
 		return connection;
 	}
 
+	/**
+	 * Creates a mySQL database called mugha if none exists.
+	 */
 	public void createDatabase() {
 		Connection conn = connectToDB("");
 
-		// Connection conn = null;
-
 		Statement stmt = null;
 		try {
-			// Execute a query
 			System.out.println("Creating database...");
 			stmt = (Statement) conn.createStatement();
 			String sql = "CREATE DATABASE IF NOT EXISTS mugha";
@@ -456,6 +510,9 @@ public class MainController implements Initializable {
 
 	}
 
+	/**
+	 * Creates a table within the mugha database if none exists.
+	 */
 	public void createTable() {
 		Connection conn = connectToDB("mugha");
 		PreparedStatement create;
@@ -470,10 +527,12 @@ public class MainController implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		System.out.println(" PROJECT Table created...");
 	}
 
+	/**
+	 * Puts data about the GitHub repositories in the database.
+	 */
 	public void insertProjectRecords(String projectURL, int numberOfContributors, int issues, int numberOfPullRequests,
 			int numberOfReleases, int numberOfCommits, java.util.Date latestCommitDate, long numberOfClasses,
 			long numberOfMethods, long numberOfLOC) {
@@ -496,7 +555,6 @@ public class MainController implements Initializable {
 			pstmt.setLong(10, numberOfLOC);
 
 			pstmt.executeUpdate();
-
 			pstmt.close();
 
 		} catch (SQLException se) {
@@ -506,13 +564,15 @@ public class MainController implements Initializable {
 			// Handle errors for Class.forName
 			e.printStackTrace();
 		}
-
 	}
 	
+	/**
+	 * Takes data from the mugha database and shows it in the UI table
+	 */
 	@FXML
 	private void loadDataFromDatabase() {
 		try {
-			Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/mugha", "root", ""); //this works
+			Connection conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/mugha", "root", "");
 			data = FXCollections.observableArrayList();
 			// Execute query and store result in a resultset
 			ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM mugha.project");
@@ -540,14 +600,18 @@ public class MainController implements Initializable {
 		columnMethods.setCellValueFactory(new PropertyValueFactory<>("Methods"));
 		columnNumberofLOC.setCellValueFactory(new PropertyValueFactory<>("NumberofLOC"));
 		columnLastUpdate.setCellValueFactory(new PropertyValueFactory<>("LastUpdate"));
-		
 		// columnLanguage.setCellValueFactory(newPropertyValueFactory<>("Language"));
 
 		tableUser.setItems(null);
 		tableUser.setItems(data);
 	}
 
-	//This method deletes repositories from the database if they're selected in the UI
+	/**
+	 * Deletes an item from the database if its associated row is selected in the UI.
+	 * 
+	 * @param event
+	 *            Clicking the Remove button.
+	 */
 	public void onDeleteItem(ActionEvent event) throws SQLException {
 		if (tableUser.getSelectionModel().selectedItemProperty().getValue().getProjectURL() != null) {
 

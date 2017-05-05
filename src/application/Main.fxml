@@ -46,7 +46,7 @@
                <children>
                   <ChoiceBox fx:id="choiceBox" layoutX="395.0" layoutY="129.0" prefHeight="25.0" prefWidth="170.0" />
                   <Button layoutX="14.0" layoutY="164.0" mnemonicParsing="false" onAction="#getMetrics" prefHeight="25.0" prefWidth="68.0" text="Search" />
-                  <TextArea fx:id="myMessage" layoutX="14.0" layoutY="200.0" prefHeight="153.0" prefWidth="570.0" />
+                  <TextArea fx:id="feedback" layoutX="14.0" layoutY="200.0" prefHeight="153.0" prefWidth="570.0" />
                   <TextArea fx:id="usernamefield" layoutX="14.0" layoutY="18.0" prefHeight="83.0" prefWidth="572.0" promptText="Input list of GitHub usernames to scan. Seperate names with spaces." />
                   <TextField fx:id="loginusernamefield" layoutX="14.0" layoutY="129.0" prefHeight="26.0" prefWidth="100.0" promptText="Username" />
                   <TextField fx:id="loginpasswordfield" layoutX="130.0" layoutY="129.0" prefHeight="26.0" prefWidth="100.0" promptText="Password" />
