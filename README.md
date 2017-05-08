@@ -1,6 +1,6 @@
-### What is MUGHA
+### What is the MU GitHub Analyzer
 
-MU GitHub Analyzer is a program that accesses GitHub projects to find data that can be used (by other programs) to find trends and their effects in Software Development.
+MU GitHub Analyzer (MUGHA) is a program that accesses GitHub projects to find data that can be used (by other programs) to find trends and their effects in Software Development.
 
 **A summary of MUGHA’s capabilities as of May 2017**
 
@@ -32,9 +32,9 @@ Make sure  you have Java installed on your system. You can follow the instructio
 
 Make sure you have MySQL installed on your system. You can follow the instructions to do so here: https://dev.mysql.com/doc/refman/5.7/en/installing.html .
 
-MySql MySql should have a userid configured as ‘root’ with password as ‘’.
+The configuration for your MySQL connection should have your Username be ‘root’ with password as ‘’ (nothing).
 
-MUGHA software expects the MySql instance service to be available in the localhost at port number 3306.
+MUGHA software expects the MySQL instance service to be available in the localhost at port number 3306.
 
 
 
